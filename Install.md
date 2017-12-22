@@ -47,3 +47,6 @@ pip install face_recognition -i https://pypi.douban.com/simple
 
 
 pip install opencv-python
+
+
+
