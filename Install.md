@@ -50,7 +50,7 @@ pip install opencv-python
 
 
 
-## Deploy Tensorflow using docker with Tensorflow Serving  
+## Deploy Tensorflow with Tensorflow Serving via docker  
 ### Install Docker CE
 ```
 apt-get remove docker docker-engine docker.io
@@ -72,9 +72,24 @@ apt-get update
 apt-get install docker-ce
 docker run hello-world
 ```
+
+```
+curl -fsSL https://get.docker.com/ | sh
+service docker restart
+
+```
+
 ### Using Tensorflow Serving via Docker
 ```
 git clone https://github.com/tensorflow/serving.git
 docker build --pull -t $USER/tensorflow-serving-devel -f ./serving/tensorflow_serving/tools/docker/Dockerfile.devel .
+docker run -it $USER/tensorflow-serving-devel
+
+git clone --recurse-submodules https://github.com/tensorflow/serving
+cd serving/tensorflow
+./configure
+cd ..
+bazel test tensorflow_serving/...
+
 ```
 
