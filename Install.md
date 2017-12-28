@@ -18,6 +18,16 @@ export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 ```
 
+### Check CUDA
+```
+cd /usr/local/cuda/samples/1_Utilities/deviceQuery
+make
+./deviceQuery   # Should print "Result = PASS"
+```
+
+
+
+
 ## Install cuDNN
 http://developer2.download.nvidia.com/compute/machine-learning/cudnn/secure/v7.0.4/prod/Doc/cuDNN-Installation-Guide.pdf?wPiewup07TxDeMsxqM5cGxaclh3i3O8mACtgJpJ6yTYiOmYf3HWv_XcndAHsstVcbCeCN47i4X65F0rowwjRiNffNdzMVq4r9Fur2gViV2ea1TYm1-5zsqS4dnJl-tn4CvEdqc6HF54JmwIlLRjR0-j38Xp6qfxjpXYExnzsCEVAaKS_b5Q4_1Nh-EncdYM4jA
 
@@ -52,30 +62,10 @@ pip install opencv-python
 
 ## Deploy Tensorflow with Tensorflow Serving via docker  
 ### Install Docker CE
-```
-apt-get remove docker docker-engine docker.io
-apt-get update
-apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
-    
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-   
-apt-get update
-
-apt-get install docker-ce
-docker run hello-world
-```
 
 ```
 curl -fsSL https://get.docker.com/ | sh
-service docker restart
+service docker start
 
 ```
 
