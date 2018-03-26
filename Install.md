@@ -83,3 +83,18 @@ bazel test tensorflow_serving/...
 
 ```
 
+
+### tf-benchmark
+```
+apt install python-pip
+pip install virtualenv 
+virtualenv --system-site-package tensorflow-env
+source tensorflow-env/bin/activate
+pip install   -i https://pypi.tuna.tsinghua.edu.cn/simple/   https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow-0.11.0-cp27-none-linux_x86_64.whll
+cd lib/python2.7/site-packages/tensorflow/models/
+cd ~/tensorflow-env/lib/python2.7/site-packages/tensorflow/models/image/alexnet/
+```
+
+
+
+
