@@ -95,6 +95,13 @@ cd lib/python2.7/site-packages/tensorflow/models/
 cd ~/tensorflow-env/lib/python2.7/site-packages/tensorflow/models/image/alexnet/
 ```
 
+### p2p direct
+```
+cd /root/NVIDIA_CUDA-8.0_Samples/1_Utilities/p2pBandwidthLatencyTest#
+make
+./p2pBandwidthLatencyTest
+
+```
 
 
 
