@@ -13,8 +13,8 @@ export LD_LIBRARY_PATH=/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PAT
 source env_cuda.rc
 
 # install cudnn 7.0
-wget ********
-tar xvf abc.tar
+wget https://nvidia.obs.myhwclouds.com/cudnn-9.0-linux-x64-v7.tgz
+tar xvf udnn-9.0-linux-x64-v7.tgz
 sudo cp ./cuda/include/cudnn.h /usr/local/cuda/include
 cp ./cuda/include/cudnn.h /usr/local/cuda/include
 cp ./cuda/lib64/libcudnn* /usr/local/cuda/lib64
@@ -29,7 +29,7 @@ apt install unzip -y
 # wget https://github.com/tensorflow/benchmarks/archive/tf_benchmark_stage.zip 
 unzip tf_benchmark_stage.zip
 cd ./benchmarks-tf_benchmark_stage/scripts/tf_cnn_enchmarks  
-python tf_cnn_benchmarks.py
+#python tf_cnn_benchmarks.py
 
 
 
