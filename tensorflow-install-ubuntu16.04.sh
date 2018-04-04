@@ -14,7 +14,7 @@ source env_cuda.rc
 
 # install cudnn 7.0
 wget https://nvidia.obs.myhwclouds.com/cudnn-9.0-linux-x64-v7.tgz
-tar xvf udnn-9.0-linux-x64-v7.tgz
+tar xvf cudnn-9.0-linux-x64-v7.tgz
 sudo cp ./cuda/include/cudnn.h /usr/local/cuda/include
 cp ./cuda/include/cudnn.h /usr/local/cuda/include
 cp ./cuda/lib64/libcudnn* /usr/local/cuda/lib64
