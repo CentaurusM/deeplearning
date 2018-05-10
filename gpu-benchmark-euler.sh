@@ -1,6 +1,8 @@
 #!/bin/bash
 
-GPU_NUM=4
+#UPDATE='--variable_update=replicated'
+UPDATE=''
+GPU_NUM=1
 # prepare
 cd ~
 
@@ -29,8 +31,8 @@ yum install cuda -y
 # set enviroment for cuda 
 echo 'export PATH=/usr/local/cuda/bin${PATH:+:${PATH}} 
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}} 
-' > env_cuda.rc 
-source env_cuda.rc 
+' > ~/env_cuda.rc 
+source ~/env_cuda.rc 
 
 # install cudnn 9.0 
 wget https://nvidia.obs.myhwclouds.com/cudnn-9.0-linux-x64-v7.tgz 
@@ -45,22 +47,22 @@ yum install python-pip -y
 # install tensorflow-gpu
 pip install tensorflow-gpu==1.6.0 -i https://pypi.douban.com/simple
 wget https://github.com/tensorflow/benchmarks/archive/tf_benchmark_stage.zip 
-unzip tf_benchmark_stage.zip
+unzip -o tf_benchmark_stage.zip
 
 # tensorflow benchmark
 echo "tensorflow benchmarks start"
 cd ~/benchmarks-tf_benchmark_stage/scripts/tf_cnn_benchmarks
 touch ~/result
 echo "vgg16" > ~/result
-python tf_cnn_benchmarks.py  --model vgg16  --batch_size=64 --num_gpus=$GPU_NUM --variable_update=replicated | grep "total images/sec" >> ~/result
+python tf_cnn_benchmarks.py  --model vgg16  --batch_size=64 --num_gpus=$GPU_NUM $UPDATE | grep "total images/sec" >> ~/result
 echo "alexnet" >> ~/result
-python tf_cnn_benchmarks.py --num_gpus=$GPU_NUM --batch_size=512 --model=alexnet --variable_update=replicated | grep "total images/sec" >> ~/result
+python tf_cnn_benchmarks.py --num_gpus=$GPU_NUM --batch_size=512 --model=alexnet $UPDATE | grep "total images/sec" >> ~/result
 echo "resnet152" >> ~/result
-python tf_cnn_benchmarks.py --num_gpus=$GPU_NUM --batch_size=64 --model=resnet152 --variable_update=replicated | grep "total images/sec" >> ~/result
+python tf_cnn_benchmarks.py --num_gpus=$GPU_NUM --batch_size=64 --model=resnet152 $UPDATE | grep "total images/sec" >> ~/result
 echo "inception3" >> ~/result
-python tf_cnn_benchmarks.py  --model inception3  --batch_size=64 --num_gpus=$GPU_NUM --variable_update=replicated | grep "total images/sec" >> ~/result
+python tf_cnn_benchmarks.py  --model inception3  --batch_size=64 --num_gpus=$GPU_NUM $UPDATE | grep "total images/sec" >> ~/result
 echo "googlenet" >> ~/result
-python tf_cnn_benchmarks.py  --model googlenet  --batch_size=64 --num_gpus=$GPU_NUM --variable_update=replicated | grep "total images/sec" >> ~/result
+python tf_cnn_benchmarks.py  --model googlenet  --batch_size=64 --num_gpus=$GPU_NUM $UPDATE | grep "total images/sec" >> ~/result
 echo "tensorflow benchmarks end"
 
 # bandwidth test
@@ -75,8 +77,14 @@ cd $P2P_PATH
 make
 ./simpleP2P >> ~/result 
 
+# P2P bandwidth
+P2P_BANDWIDTH='/usr/local/cuda/samples/1_Utilities/p2pBandwidthLatencyTest'
+cd $P2P_BANDWIDTH
+make
+./p2pBandwidthLatencyTest >> ~/result
+
 # DISK 
-yum install fio
+yum install fio -y
 touch ~/disk_result
 echo "" > ~/disk_result
 echo "###############init disk##################" >> ~/disk_result
@@ -84,10 +92,10 @@ echo "init disk"
 fio -ioengine=libaio -group_reporting -direct=1 -rw=write -bs=128k -iodepth=32 -size=100G  -name=/dev/nvme0n1 > ~/disk_result
 echo "###############write disk#################" >> ~/disk_result
 echo "write disk" 
-fio -ioengine=libaio -group_reporting -direct=1 -rw=randwrite -bs=4k -iodepth=128 -runtime=10 -time_based -name=/dev/nvme0n1 >> ~/disk_result
+fio -ioengine=libaio -group_reporting -direct=1 -rw=randwrite -bs=4k -iodepth=128 -runtime=100 -time_based -name=/dev/nvme0n1 >> ~/disk_result
 echo "###############read disk##################" >> ~/disk_result
 echo "read disk"
-fio -ioengine=libaio -group_reporting -direct=1 -rw=randread -bs=4k -iodepth=128 -runtime=10 -time_based  -name=/dev/nvme0n1 >> ~/disk_result
+fio -ioengine=libaio -group_reporting -direct=1 -rw=randread -bs=4k -iodepth=128 -runtime=100 -time_based  -name=/dev/nvme0n1 >> ~/disk_result
 
 
 
