@@ -63,6 +63,31 @@ echo "googlenet" >> ~/result
 python tf_cnn_benchmarks.py  --model googlenet  --batch_size=64 --num_gpus=$GPU_NUM --variable_update=replicated | grep "total images/sec" >> ~/result
 echo "tensorflow benchmarks end"
 
+# bandwidth test
+BANDWIDTH_PATH='/usr/local/cuda/samples/1_Utilities/bandwidthTest'
+cd $BANDWIDTH_PATH
+make
+./bandwidthTest >> ~/result
+
+# P2P
+P2P_PATH='/usr/local/cuda/samples/0_Simple/simpleP2P'
+cd $P2P_PATH
+make
+./simpleP2P >> ~/result 
+
+# DISK 
+yum install fio
+touch ~/disk_result
+echo "" > ~/disk_result
+echo "###############init disk##################" >> ~/disk_result
+echo "init disk" 
+fio -ioengine=libaio -group_reporting -direct=1 -rw=write -bs=128k -iodepth=32 -size=100G  -name=/dev/nvme0n1 > ~/disk_result
+echo "###############write disk#################" >> ~/disk_result
+echo "write disk" 
+fio -ioengine=libaio -group_reporting -direct=1 -rw=randwrite -bs=4k -iodepth=128 -runtime=10 -time_based -name=/dev/nvme0n1 >> ~/disk_result
+echo "###############read disk##################" >> ~/disk_result
+echo "read disk"
+fio -ioengine=libaio -group_reporting -direct=1 -rw=randread -bs=4k -iodepth=128 -runtime=10 -time_based  -name=/dev/nvme0n1 >> ~/disk_result
 
 
 
