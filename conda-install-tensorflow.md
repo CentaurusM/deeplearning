@@ -37,3 +37,4 @@ conda create -n tensorflow_gpu_env tensorflow-gpu=1.10.0
 - https://conda.io/docs/user-guide/install/linux.html
 - https://conda.io/miniconda.html
 - https://www.jiqizhixin.com/articles/2018-10-12-2
+- https://docs.anaconda.com/_downloads/Anaconda-Starter-Guide-Cheat-Sheet.pdf
